@@ -1,0 +1,18 @@
+h1 {font-weight: 600};
+
+ion-icon {margin: 0 12px 0 12px;}
+
+ion-item, section {
+  width: 60%;
+  margin: 12px auto;
+}
+section {
+  border:5px solid red;
+  color: blue;
+  li {
+    .label{font-weight: bold};
+    .date {font-style: italic;}
+  }
+}
+
+

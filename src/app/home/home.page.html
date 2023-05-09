@@ -1,0 +1,32 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      <h1>Sample app with ion-datetime component</h1>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-item>
+    <ion-label>Please Select a Future Date</ion-label>
+    <ion-input id="open-date-picker" placeholder="Select Date" value="{{selectedDate}}" class="ion-text-end" readonly="true"></ion-input>
+    <ion-icon name="calendar"></ion-icon>
+    <ion-popover trigger="open-date-picker" (didPresent)="hideDates()" size="cover">
+      <ng-template>
+        <ion-datetime [showDefaultButtons]="true" presentation="date" value="" displayFormat="MMMM YYYY"
+          min="{{minDate}}" max="{{maxDate}}" (ionChange)="setDate($event)">
+        </ion-datetime>
+      </ng-template>
+    </ion-popover>
+    <ion-button [disabled]="!selectedDate" (click)='doSubmit()'>Submit</ion-button>
+  </ion-item>
+  <section *ngIf='didSubmit'>
+    <ul>
+      <li *ngFor='let date of dates'>
+        <span class='label'>{{date.label}}</span>
+        <span class='date'> {{date.date}}</span>
+      </li>
+    </ul>
+  </section>
+</ion-content>
