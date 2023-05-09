@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { warn } from 'console';
 
 interface IDate {
   label: string,
@@ -17,7 +16,7 @@ export class HomePage {
 
   public today: string = ''
   public yesterday: string = ''
-  public minDate: any 
+  public minDate: string = '' 
   public maxDate: string = ''
   public selectedDate: any
   public tenDaysFuture: string = ''
@@ -29,13 +28,17 @@ export class HomePage {
 
   ngOnInit() {
 
-    const today = new Date()
-    this.minDate = new Date(today)
-    this.minDate.setDate(this.minDate.getDate() + 1)
-    console.log('minDate: ', this.minDate) 
-   
-    today.setFullYear(today.getFullYear() + 5);
-    this.maxDate = today.toISOString()
+    // Prevent date advance by one day when calling toISOString() due to timezone conversion issue
+   const date = new Date();
+   const timezoneOffset = date.getTimezoneOffset() * 60000; // convert minutes to milliseconds
+   const adjustedDate = new Date(date.getTime() - timezoneOffset);
+   adjustedDate.setDate(adjustedDate.getDate()+1)
+   this.minDate = adjustedDate.toISOString().split('T')[0]
+   console.log('minDate: ', this.minDate)
+  
+   const today = new Date()
+   today.setFullYear(today.getFullYear() + 5);
+   this.maxDate = today.toISOString()
   }
 
   setDate(e: any) {
@@ -67,13 +70,13 @@ export class HomePage {
 
   }
 
-  getISODate(d: Date): string {
-    let day = d.getDate();
-    let month = d.getMonth() + 1;
-    let year = d.getFullYear();
-    let currentDate = `${month}-${day}-${year}`;
-    //return d.toISOString().split('T')[0]
-    return currentDate;
+  // Prevent date advance by one day when calling toISOString() due to timezone conversion issue
+  adjustedDate() {
+    const date = new Date();
+    const timezoneOffset = date.getTimezoneOffset() * 60000; // convert minutes to milliseconds
+    const adjustedDate = new Date(date.getTime() - timezoneOffset);
+    console.log('adjustedDate: ', adjustedDate)
+    return adjustedDate;  
   }
 
   hideDates() {
