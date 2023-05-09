@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { warn } from 'console';
 
 interface IDate {
   label: string,
@@ -16,11 +17,11 @@ export class HomePage {
 
   public today: string = ''
   public yesterday: string = ''
-  public minDate: string = ''
+  public minDate: any 
   public maxDate: string = ''
   public selectedDate: any
-  public tenDaysPastSelectedDate: string = ''
-  public oneYearPastSelectedDate: string = ''
+  public tenDaysFuture: string = ''
+  public oneYearFuture: string = ''
   public dates: IDate[] = []
   public didSubmit = false
 
@@ -28,26 +29,27 @@ export class HomePage {
 
   ngOnInit() {
 
-
-    const d = new Date()
-    d.setDate(d.getDate() + 1)
-    this.minDate = d.toISOString()
-
-    d.setFullYear(d.getFullYear() + 5);
-    this.maxDate = d.toISOString()
+    const today = new Date()
+    this.minDate = new Date(today)
+    this.minDate.setDate(this.minDate.getDate() + 1)
+    console.log('minDate: ', this.minDate) 
+   
+    today.setFullYear(today.getFullYear() + 5);
+    this.maxDate = today.toISOString()
   }
 
   setDate(e: any) {
 
     this.dates = []
-    console.log(new Date().toISOString())
     this.today = new Date().toISOString().split('T')[0]
+    //this.today = this.getISODate(new Date())
     console.log(this.today)
     this.dates.push({ label: 'Today:', date: this.today })
 
     const y = new Date()
     y.setDate(y.getDate() - 1)
     this.yesterday = y.toISOString().split('T')[0]
+
     this.dates.push({ label: 'Yesterday:', date: this.yesterday })
 
     const d = new Date(e.detail.value)
@@ -55,14 +57,23 @@ export class HomePage {
 
     const td = new Date(e.detail.value)
     td.setDate(d.getDate() + 10)
-    this.tenDaysPastSelectedDate = td.toISOString().split('T')[0]
-    this.dates.push({ label: '10 days past selected date:', date: this.tenDaysPastSelectedDate })
+    this.tenDaysFuture = td.toISOString().split('T')[0]
+    this.dates.push({ label: '10 days past selected date:', date: this.tenDaysFuture })
 
     const oy = new Date(e.detail.value)
     oy.setFullYear(oy.getFullYear() + 1)
-    this.oneYearPastSelectedDate = oy.toISOString().split('T')[0]
-    this.dates.push({ label: '1 year past selected date: ', date: this.oneYearPastSelectedDate })
+    this.oneYearFuture = oy.toISOString().split('T')[0]
+    this.dates.push({ label: '1 year past selected date: ', date: this.oneYearFuture })
 
+  }
+
+  getISODate(d: Date): string {
+    let day = d.getDate();
+    let month = d.getMonth() + 1;
+    let year = d.getFullYear();
+    let currentDate = `${month}-${day}-${year}`;
+    //return d.toISOString().split('T')[0]
+    return currentDate;
   }
 
   hideDates() {
