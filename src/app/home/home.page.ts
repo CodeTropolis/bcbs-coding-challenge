@@ -31,7 +31,6 @@ export class HomePage {
     const ad = this.adjustedDate()
     ad.setDate(ad.getDate()+1)
     this.minDate = ad.toISOString().split('T')[0]
-    console.log('minDate: ', this.minDate)
   
     const today = new Date()
     today.setFullYear(today.getFullYear() + 5);
@@ -50,16 +49,16 @@ export class HomePage {
 
     this.dates.push({ label: 'Yesterday:', date: this.yesterday })
 
-//    const d = new Date(e.detail.value)
     const d = this.adjustedDate(new Date(e.detail.value))
     this.selectedDate = d.toISOString().split('T')[0]
 
-    const td = new Date(e.detail.value)
+    const td = this.adjustedDate(new Date(e.detail.value))
     td.setDate(d.getDate() + 10)
     this.tenDaysFuture = td.toISOString().split('T')[0]
     this.dates.push({ label: '10 days past selected date:', date: this.tenDaysFuture })
 
-    const oy = new Date(e.detail.value)
+
+    const oy = this.adjustedDate(new Date(e.detail.value))
     oy.setFullYear(oy.getFullYear() + 1)
     this.oneYearFuture = oy.toISOString().split('T')[0]
     this.dates.push({ label: '1 year past selected date: ', date: this.oneYearFuture })
