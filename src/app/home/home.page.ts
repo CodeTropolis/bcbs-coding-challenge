@@ -28,25 +28,20 @@ export class HomePage {
 
   ngOnInit() {
 
-    // Prevent date advance by one day when calling toISOString() due to timezone conversion issue
-   const date = new Date();
-   const timezoneOffset = date.getTimezoneOffset() * 60000; // convert minutes to milliseconds
-   const adjustedDate = new Date(date.getTime() - timezoneOffset);
-   adjustedDate.setDate(adjustedDate.getDate()+1)
-   this.minDate = adjustedDate.toISOString().split('T')[0]
-   console.log('minDate: ', this.minDate)
+    const ad = this.adjustedDate()
+    ad.setDate(ad.getDate()+1)
+    this.minDate = ad.toISOString().split('T')[0]
+    console.log('minDate: ', this.minDate)
   
-   const today = new Date()
-   today.setFullYear(today.getFullYear() + 5);
-   this.maxDate = today.toISOString()
+    const today = new Date()
+    today.setFullYear(today.getFullYear() + 5);
+    this.maxDate = today.toISOString()
   }
 
   setDate(e: any) {
 
     this.dates = []
     this.today = new Date().toISOString().split('T')[0]
-    //this.today = this.getISODate(new Date())
-    console.log(this.today)
     this.dates.push({ label: 'Today:', date: this.today })
 
     const y = new Date()
@@ -55,7 +50,8 @@ export class HomePage {
 
     this.dates.push({ label: 'Yesterday:', date: this.yesterday })
 
-    const d = new Date(e.detail.value)
+//    const d = new Date(e.detail.value)
+    const d = this.adjustedDate(new Date(e.detail.value))
     this.selectedDate = d.toISOString().split('T')[0]
 
     const td = new Date(e.detail.value)
@@ -71,12 +67,12 @@ export class HomePage {
   }
 
   // Prevent date advance by one day when calling toISOString() due to timezone conversion issue
-  adjustedDate() {
-    const date = new Date();
-    const timezoneOffset = date.getTimezoneOffset() * 60000; // convert minutes to milliseconds
-    const adjustedDate = new Date(date.getTime() - timezoneOffset);
-    console.log('adjustedDate: ', adjustedDate)
-    return adjustedDate;  
+  adjustedDate(date?:Date) {
+    let _date;
+    date ? _date = date : _date = new Date()
+    const timezoneOffset = _date.getTimezoneOffset() * 60000; // convert minutes to milliseconds
+    const nd = new Date(_date.getTime() - timezoneOffset);
+    return nd;
   }
 
   hideDates() {
@@ -86,6 +82,5 @@ export class HomePage {
   doSubmit() {
     this.didSubmit = true
   }
-
 
 }
