@@ -14,9 +14,9 @@
     <ion-icon name="calendar"></ion-icon>
     <ion-popover trigger="open-date-picker" (didPresent)="hideDates()" size="cover">
       <ng-template>
-        <ion-datetime [showDefaultButtons]="true" presentation="date" value="" displayFormat="MMMM YYYY"
+        <ion-datetime [isDateEnabled]="isNotTuesday" [showDefaultButtons]="true" presentation="date" value="" displayFormat="MMMM YYYY"
           min="{{minDate}}" max="{{maxDate}}" (ionChange)="setDate($event)">
-        </ion-datetime>
+        </ion-datetime>k
       </ng-template>
     </ion-popover>
     <ion-button [disabled]="!selectedDate" (click)='doSubmit()'>Submit</ion-button>

@@ -37,6 +37,15 @@ export class HomePage {
     this.maxDate = today.toISOString()
   }
 
+  isNotTuesday(dateString: string): boolean {
+    const date = new Date(dateString)
+    const day = date.getUTCDay()
+    console.log('day: ', day)
+    return day !== 2  
+  }
+
+
+
   setDate(e: any) {
 
     this.dates = []
